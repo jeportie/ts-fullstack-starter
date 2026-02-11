@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["./*.js", "./*.mjs", "./*.cjs", "./*.ts", ".eslintrc.cjs"],
+  "exclude": ["node_modules", "backend", "frontend"]
+}

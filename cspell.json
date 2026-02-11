@@ -1,0 +1,56 @@
+{
+  "version": "0.2",
+  "words": [
+    "autoprefixer",
+    "Avenir",
+    "commitlint",
+    "customterm",
+    "conventionalcommits",
+    "corepack",
+    "davelosert",
+    "eslintcache",
+    "fastify",
+    "fnm",
+    "fullstack",
+    "iconify",
+    "Iconify",
+    "jsdom",
+    "mise",
+    "monorepo",
+    "mycompany",
+    "njsproj",
+    "ntvs",
+    "postcss",
+    "secretlintrc",
+    "tailwindcss",
+    "toml",
+    "tsx",
+    "typecheck",
+    "vitejs",
+    "vite",
+    "vitest",
+    "webdeveric",
+    "workspaces",
+    "xlink"
+  ],
+  "ignorePaths": [
+    ".vscode/",
+    ".secretlintrc.json",
+    "node_modules",
+    "dist",
+    "build",
+    "coverage",
+    "private",
+    "package.json",
+    "package-lock.json",
+    "backend/__tests__/data",
+    "frontend/__tests__/data",
+    "**/*.svg"
+  ],
+  "languageSettings": [
+    {
+      "languageId": "commit-msg",
+      "ignoreRegExpList": ["/^#.*/gm"]
+    }
+  ]
+}
