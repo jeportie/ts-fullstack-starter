@@ -1,65 +1,95 @@
-import eslint from '@eslint/js';
-import stylistic from '@stylistic/eslint-plugin';
-import prettier from 'eslint-config-prettier';
-import tseslint from 'typescript-eslint';
+import eslint from '@eslint/js'
+import tseslint from 'typescript-eslint'
+import stylistic from '@stylistic/eslint-plugin'
+import importPlugin from 'eslint-plugin-import'
+import prettier from 'eslint-config-prettier'
 
 export default tseslint.config(
-  // Global ignores
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**', 'frontend/**'],
+    ignores: [
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/coverage/**',
+      '**/.vite/**'
+    ],
   },
 
-  // Base configs
   eslint.configs.recommended,
+
   ...tseslint.configs.recommendedTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
 
-  // TypeScript parser options
   {
+    plugins: {
+      '@stylistic': stylistic,
+      import: importPlugin,
+    },
+
     languageOptions: {
       parserOptions: {
         projectService: true,
         tsconfigRootDir: import.meta.dirname,
       },
     },
-  },
 
-  // Stylistic rules
-  {
-    plugins: {
-      '@stylistic': stylistic,
+    settings: {
+      'import/resolver': {
+        typescript: true,
+        node: true,
+      },
     },
+
     rules: {
+      /* ---------------- IMPORTS ---------------- */
+      'import/first': 'error',
+      'import/no-cycle': 'error',
+      'import/no-self-import': 'error',
+      'import/no-unresolved': 'error',
+      'import/no-useless-path-segments': 'error',
+      'import/order': [
+        'error',
+        {
+          alphabetize: { order: 'asc', caseInsensitive: true },
+          groups: [
+            'builtin',
+            'external',
+            'internal',
+            'parent',
+            ['sibling', 'index'],
+            'type',
+          ],
+          'newlines-between': 'always',
+        },
+      ],
+
+      /* ---------------- STYLISTIC ---------------- */
       '@stylistic/quotes': ['error', 'single', { avoidEscape: true }],
+      'spaced-comment': ['error', 'always'],
+
+      /* ---------------- TYPESCRIPT ---------------- */
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_' },
+      ],
     },
   },
 
-  // General TypeScript rules
+  /* ---------------- TEST OVERRIDES ---------------- */
   {
-    rules: {
-      'sort-imports': 'off',
-      'spaced-comment': ['error', 'always', { block: { markers: ['!'], balanced: true } }],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
-    },
-  },
-
-  // Test files - relaxed rules
-  {
-    files: ['**/__tests__/**/*.{ts,tsx}', '**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
+    files: ['**/*.test.{ts,tsx}', '**/*.spec.{ts,tsx}'],
     rules: {
       '@typescript-eslint/no-explicit-any': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
-      '@typescript-eslint/no-unsafe-member-access': 'off',
       '@typescript-eslint/no-unsafe-call': 'off',
     },
   },
 
-  // Config files - disable type checking for JS config files
+  /* ---------------- CONFIG FILES ---------------- */
   {
-    files: ['*.config.{js,mjs,cjs}', '**/*.config.{js,mjs,cjs}'],
+    files: ['*.config.{js,mjs,cjs}'],
     ...tseslint.configs.disableTypeChecked,
   },
 
-  // Prettier must be last
+  /* ---------------- PRETTIER MUST BE LAST ---------------- */
   prettier,
-);
+)
